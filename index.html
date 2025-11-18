@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>FuelOmat - Africa Target Markets Map</title>
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <!-- MapLibre GL CSS & JS -->
+    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
+    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    
     <style>
         body {
             margin: 0;
@@ -176,61 +180,51 @@
             color: #333;
         }
         
-        #legend {
+        #searchContainer {
+            padding: 15px;
             background: white;
-            padding: 20px;
-            margin: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 1px solid #e0e0e0;
         }
         
-        #legend h3 {
-            margin-top: 0;
-            color: #1e3c72;
+        #searchContainer input {
+            width: calc(100% - 80px);
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 14px;
         }
         
-        .legend-item {
-            display: flex;
-            align-items: center;
-            margin: 10px 0;
+        #searchContainer button {
+            padding: 8px 15px;
+            background: #1e3c72;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 5px;
+        }
+        
+        #searchContainer button:hover {
+            background: #2a5298;
+        }
+        
+        #searchResult {
+            margin-top: 10px;
             padding: 8px;
             border-radius: 4px;
-            transition: background 0.2s;
-        }
-        
-        .legend-item:hover {
-            background: #f0f0f0;
-        }
-        
-        .legend-color {
-            width: 30px;
-            height: 30px;
-            border-radius: 4px;
-            margin-right: 12px;
-            border: 2px solid #ddd;
-        }
-        
-        .legend-text {
-            flex: 1;
-        }
-        
-        .legend-text strong {
-            display: block;
-            margin-bottom: 3px;
-        }
-        
-        .legend-text small {
-            color: #666;
             font-size: 12px;
+            min-height: 20px;
         }
         
-        .leaflet-popup-content {
-            margin: 12px;
+        /* MapLibre Popup Styles */
+        .maplibregl-popup-content {
+            padding: 15px;
+            border-radius: 8px;
             min-width: 200px;
         }
         
         .popup-title {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             color: #1e3c72;
             margin-bottom: 8px;
@@ -238,433 +232,195 @@
         
         .popup-tier {
             display: inline-block;
-            padding: 4px 10px;
+            padding: 3px 10px;
             border-radius: 12px;
             font-size: 11px;
             font-weight: bold;
             margin-bottom: 8px;
         }
         
-        .tier1 { background: #4CAF50; color: white; }
-        .tier2 { background: #FFC107; color: #333; }
-        .tier3 { background: #FF9800; color: white; }
-        .tier4 { background: #333333; color: white; }
+        .popup-tier.tier1 {
+            background: #4CAF50;
+            color: white;
+        }
+        
+        .popup-tier.tier2 {
+            background: #FFC107;
+            color: #333;
+        }
+        
+        .popup-tier.tier3 {
+            background: #FF9800;
+            color: white;
+        }
+        
+        .popup-tier.tier4 {
+            background: #333333;
+            color: white;
+        }
         
         .popup-info {
+            margin-top: 8px;
             font-size: 13px;
-            line-height: 1.6;
             color: #555;
+            line-height: 1.4;
         }
         
         .popup-region {
-            font-size: 12px;
-            color: #888;
-            margin-top: 5px;
+            margin-top: 8px;
+            font-size: 11px;
+            color: #999;
             font-style: italic;
         }
         
-        #footer {
-            text-align: center;
-            padding: 20px;
-            color: #666;
-            font-size: 13px;
-        }
-        
-        /* Mobile Responsive Styles */
-        @media screen and (max-width: 768px) {
-            body {
-                height: 100vh;
-                overflow: hidden;
-            }
-            
-            #header {
-                padding: 10px 15px;
-            }
-            
-            #header h1 {
-                font-size: 16px;
-            }
-            
-            #header p {
-                font-size: 10px;
-                margin: 3px 0 0 0;
-            }
-            
-            #header input[type="text"] {
-                width: 160px !important;
-                font-size: 12px;
-                padding: 6px;
-                margin-top: 8px;
-            }
-            
-            #header button {
-                padding: 6px 12px;
-                font-size: 12px;
-            }
-            
+        @media (max-width: 768px) {
             #mainContainer {
                 flex-direction: column;
-                flex: 1;
-            }
-            
-            #map {
-                height: 60vh;
-                width: 100%;
-                flex: none;
             }
             
             #countryList {
                 width: 100%;
-                height: auto;
-                max-height: 25vh;
-                overflow-y: auto;
-                order: 2;
-                flex: none;
-            }
-            
-            #countryList h3 {
-                font-size: 14px;
-                padding: 8px 0;
-            }
-            
-            .country-item {
-                padding: 8px 10px;
-                margin: 3px 0;
-            }
-            
-            .country-name {
-                font-size: 13px;
+                max-height: 300px;
             }
             
             #legend {
-                flex-direction: row;
-                align-items: center;
-                padding: 8px 10px;
-                gap: 10px;
-                flex-wrap: wrap;
-                justify-content: center;
-                flex: none;
-            }
-            
-            #legend h3 {
-                font-size: 12px;
-                margin: 0;
-                width: 100%;
-                text-align: center;
-                margin-bottom: 5px;
-            }
-            
-            .legend-item {
-                flex: 0 0 auto;
-            }
-            
-            .legend-text {
-                font-size: 10px;
-            }
-            
-            .legend-text strong {
-                font-size: 10px;
-            }
-            
-            .legend-color {
-                width: 15px;
-                height: 15px;
-            }
-            
-            .popup-title {
-                font-size: 15px;
-            }
-            
-            .popup-info {
+                padding: 10px;
                 font-size: 11px;
-            }
-            
-            #footer {
-                display: none;
-            }
-        }
-        
-        /* Landscape Mobile */
-        @media screen and (max-width: 900px) and (orientation: landscape) {
-            body {
-                height: 100vh;
-                overflow: hidden;
-            }
-            
-            #mainContainer {
-                flex-direction: row;
-                flex: 1;
-            }
-            
-            #map {
-                height: 100%;
-                flex: 1;
-            }
-            
-            #countryList {
-                width: 220px;
-                max-height: 100%;
-                height: 100%;
-                flex: none;
-            }
-            
-            #countryList h3 {
-                font-size: 13px;
-                padding: 6px 0;
-            }
-            
-            .country-item {
-                padding: 6px 8px;
-                margin: 2px 0;
-            }
-            
-            .country-name {
-                font-size: 11px;
-            }
-            
-            .country-tier-badge {
-                font-size: 9px;
-                padding: 2px 6px;
-            }
-            
-            #header {
-                padding: 8px 12px;
-            }
-            
-            #header h1 {
-                font-size: 14px;
-            }
-            
-            #header p {
-                display: none;
-            }
-            
-            #header input[type="text"] {
-                width: 120px !important;
-                font-size: 10px;
-                padding: 5px;
-            }
-            
-            #header button {
-                padding: 5px 8px;
-                font-size: 10px;
-            }
-            
-            #searchResult {
-                display: none;
-            }
-            
-            #legend {
-                flex-direction: row;
-                padding: 5px 8px;
-                gap: 8px;
-                flex-wrap: nowrap;
-                justify-content: center;
-                flex: none;
-            }
-            
-            #legend h3 {
-                font-size: 10px;
-                margin: 0 5px 0 0;
-            }
-            
-            .legend-text {
-                font-size: 9px;
-            }
-            
-            .legend-text strong {
-                font-size: 9px;
-            }
-            
-            .legend-color {
-                width: 12px;
-                height: 12px;
-            }
-            
-            .legend-item {
-                gap: 4px;
-            }
-            
-            #footer {
-                display: none;
-            }
-        }
-        
-        /* Small phones */
-        @media screen and (max-width: 480px) {
-            #header h1 {
-                font-size: 14px;
-            }
-            
-            #header input[type="text"] {
-                width: 140px !important;
-                font-size: 11px;
-            }
-            
-            #header button {
-                padding: 6px 10px;
-                font-size: 11px;
-                margin-left: 5px;
-            }
-            
-            #map {
-                height: 55vh;
-            }
-            
-            #countryList {
-                max-height: 28vh;
-            }
-            
-            .country-item {
-                padding: 7px;
-                font-size: 12px;
-            }
-            
-            #legend h3 {
-                font-size: 11px;
-            }
-            
-            .legend-text strong {
-                font-size: 9px;
             }
         }
     </style>
 </head>
 <body>
     <div id="header">
-        <h1>FuelOmat - Africa Market Expansion Map</h1>
-        <p>Strategic Target Markets for Fleet Management & Fuel Control Systems</p>
-        
-        <div style="margin-top: 15px;">
-            <input type="text" id="countrySearch" placeholder="Search for a country (e.g., Nigeria, Kenya)..." 
-                   style="width: 400px; padding: 10px; font-size: 14px; border: 2px solid white; border-radius: 5px;">
-            <button id="searchBtn" style="padding: 10px 20px; font-size: 14px; background: white; color: #1e3c72; 
-                    border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 10px;">
-                Search
-            </button>
-        </div>
-        <div id="searchResult" style="margin-top: 10px; font-size: 13px; min-height: 20px;"></div>
+        <h1>🌍 FuelOmat - Africa Target Markets Map</h1>
+        <p>Strategic market analysis for fleet management & fuel monitoring solutions</p>
     </div>
     
     <div id="mainContainer">
         <div id="map"></div>
         
         <div id="countryList">
-            <h3>Countries List</h3>
+            <h3>Target Countries (32)</h3>
+            
+            <div id="searchContainer">
+                <input type="text" id="countrySearch" placeholder="Search country..." />
+                <button id="searchBtn">🔍</button>
+                <div id="searchResult"></div>
+            </div>
+            
             <div id="countriesContainer"></div>
         </div>
     </div>
     
     <div id="legend">
-        <h3>Market Priority Tiers:</h3>
+        <h3>Priority Tiers:</h3>
         <div class="legend-item">
             <div class="legend-color" style="background: #4CAF50;"></div>
-            <div class="legend-text"><strong>TIER 1 - Top Priority</strong></div>
+            <div class="legend-text"><strong>TIER 1:</strong> Primary Focus</div>
         </div>
         <div class="legend-item">
             <div class="legend-color" style="background: #FFC107;"></div>
-            <div class="legend-text"><strong>TIER 2 - Strategic Expansion</strong></div>
+            <div class="legend-text"><strong>TIER 2:</strong> Strategic Expansion</div>
         </div>
         <div class="legend-item">
             <div class="legend-color" style="background: #FF9800;"></div>
-            <div class="legend-text"><strong>TIER 3 - Future Markets</strong></div>
+            <div class="legend-text"><strong>TIER 3:</strong> Future Markets</div>
         </div>
         <div class="legend-item">
             <div class="legend-color" style="background: #333333;"></div>
-            <div class="legend-text"><strong>TIER 4 - AVOID</strong></div>
+            <div class="legend-text"><strong>AVOID:</strong> High Risk</div>
         </div>
     </div>
-    
-    <div id="footer">
-        <p><strong>FuelOmat.cz</strong> - Automatic Vehicle Identification & Fuel Management Systems</p>
-        <p>Created for LinkedIn Sales Navigator targeting strategy</p>
-    </div>
 
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     <script>
-        // Initialize map centered on Africa
-        const map = L.map('map').setView([0, 20], 4);
+        // Initialize MapLibre GL map with English labels
+        const map = new maplibregl.Map({
+            container: 'map',
+            style: 'https://demotiles.maplibre.org/style.json', // Free demo tiles in English
+            center: [20, -5],
+            zoom: 3,
+            maxZoom: 18,
+            minZoom: 2
+        });
 
-        // Add OpenStreetMap tiles
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors',
-            maxZoom: 18
-        }).addTo(map);
+        // Add navigation controls
+        map.addControl(new maplibregl.NavigationControl(), 'top-right');
+        map.addControl(new maplibregl.FullscreenControl(), 'top-right');
 
-        // Country data with coordinates, tier, and details
+        // Country data with coordinates
         const countries = [
-            // TIER 1 - Top Priority
-            { name: 'South Africa', coords: [-30.5595, 22.9375], tier: 1, region: 'Southern Africa', 
-              info: 'Most developed infrastructure, massive mining industry, advanced logistics' },
-            { name: 'Nigeria', coords: [9.0820, 8.6753], tier: 1, region: 'West Africa', 
+            // TIER 1 - Primary Focus
+            { name: 'South Africa', coords: [28.0473, -26.2041], tier: 1, region: 'Southern Africa', 
+              info: 'Most developed market, strong infrastructure, major industries & mining' },
+            { name: 'Nigeria', coords: [8.6753, 9.0820], tier: 1, region: 'West Africa', 
               info: 'Largest market (200M+ people), oil & gas industry, extensive transportation' },
-            { name: 'Kenya', coords: [-0.0236, 37.9062], tier: 1, region: 'East Africa', 
+            { name: 'Kenya', coords: [37.9062, -0.0236], tier: 1, region: 'East Africa', 
               info: 'Tech hub of East Africa, Mombasa port logistics, modern companies' },
-            { name: 'Egypt', coords: [26.8206, 30.8025], tier: 1, region: 'North Africa', 
+            { name: 'Egypt', coords: [30.8025, 26.8206], tier: 1, region: 'North Africa', 
               info: 'Huge market (100M+), manufacturing & construction, Suez Canal logistics' },
-            { name: 'Morocco', coords: [31.7917, -7.0926], tier: 1, region: 'North Africa', 
+            { name: 'Morocco', coords: [-7.0926, 31.7917], tier: 1, region: 'North Africa', 
               info: 'Modern infrastructure, Europe connections, developed industry' },
             
             // TIER 2 - Strategic Expansion
-            { name: 'Ghana', coords: [7.9465, -1.0232], tier: 2, region: 'West Africa', 
+            { name: 'Ghana', coords: [-1.0232, 7.9465], tier: 2, region: 'West Africa', 
               info: 'Stable economy, gold & oil, good infrastructure' },
-            { name: 'Ethiopia', coords: [9.1450, 40.4897], tier: 2, region: 'East Africa', 
+            { name: 'Ethiopia', coords: [40.4897, 9.1450], tier: 2, region: 'East Africa', 
               info: 'Fast growth, emerging industry, 120M population' },
-            { name: 'Tanzania', coords: [-6.3690, 34.8888], tier: 2, region: 'East Africa', 
+            { name: 'Tanzania', coords: [34.8888, -6.3690], tier: 2, region: 'East Africa', 
               info: 'Natural resources, developing infrastructure, Dar es Salaam port' },
-            { name: 'Botswana', coords: [-22.3285, 24.6849], tier: 2, region: 'Southern Africa', 
+            { name: 'Botswana', coords: [24.6849, -22.3285], tier: 2, region: 'Southern Africa', 
               info: 'Economic stability, diamond mining, good governance' },
-            { name: 'Ivory Coast', coords: [7.5400, -5.5471], tier: 2, region: 'West Africa', 
+            { name: 'Ivory Coast', coords: [-5.5471, 7.5400], tier: 2, region: 'West Africa', 
               info: 'Growing economy, Abidjan port, industry & agriculture' },
-            { name: 'Namibia', coords: [-22.9576, 18.4904], tier: 2, region: 'Southern Africa', 
+            { name: 'Namibia', coords: [18.4904, -22.9576], tier: 2, region: 'Southern Africa', 
               info: 'Mining sector, logistics, good infrastructure' },
             
             // TIER 3 - Future Markets
-            { name: 'Uganda', coords: [1.3733, 32.2903], tier: 3, region: 'East Africa', 
+            { name: 'Uganda', coords: [32.2903, 1.3733], tier: 3, region: 'East Africa', 
               info: 'Economic growth, agriculture & industry' },
-            { name: 'Zambia', coords: [-13.1339, 27.8493], tier: 3, region: 'Southern Africa', 
+            { name: 'Zambia', coords: [27.8493, -13.1339], tier: 3, region: 'Southern Africa', 
               info: 'Copper mining, industry' },
-            { name: 'Zimbabwe', coords: [-19.0154, 29.1549], tier: 3, region: 'Southern Africa', 
+            { name: 'Zimbabwe', coords: [29.1549, -19.0154], tier: 3, region: 'Southern Africa', 
               info: 'Mining, agriculture' },
-            { name: 'Senegal', coords: [14.4974, -14.4524], tier: 3, region: 'West Africa', 
+            { name: 'Senegal', coords: [-14.4524, 14.4974], tier: 3, region: 'West Africa', 
               info: 'Political stability, good infrastructure' },
-            { name: 'Rwanda', coords: [-1.9403, 29.8739], tier: 3, region: 'East Africa', 
+            { name: 'Rwanda', coords: [29.8739, -1.9403], tier: 3, region: 'East Africa', 
               info: 'Technology & innovation hub' },
-            { name: 'Mozambique', coords: [-18.6657, 35.5296], tier: 3, region: 'East Africa', 
+            { name: 'Mozambique', coords: [35.5296, -18.6657], tier: 3, region: 'East Africa', 
               info: 'Oil & gas, coal mining' },
-            { name: 'Tunisia', coords: [33.8869, 9.5375], tier: 3, region: 'North Africa', 
+            { name: 'Tunisia', coords: [9.5375, 33.8869], tier: 3, region: 'North Africa', 
               info: 'Manufacturing industry' },
-            { name: 'Algeria', coords: [28.0339, 1.6596], tier: 3, region: 'North Africa', 
+            { name: 'Algeria', coords: [1.6596, 28.0339], tier: 3, region: 'North Africa', 
               info: 'Oil & gas sector' },
-            { name: 'Cameroon', coords: [7.3697, 12.3547], tier: 3, region: 'West Africa', 
+            { name: 'Cameroon', coords: [12.3547, 7.3697], tier: 3, region: 'West Africa', 
               info: 'Oil, mining' },
-            { name: 'Angola', coords: [-11.2027, 17.8739], tier: 3, region: 'Southern Africa', 
+            { name: 'Angola', coords: [17.8739, -11.2027], tier: 3, region: 'Southern Africa', 
               info: 'Oil, mining' },
-            { name: 'Malawi', coords: [-13.2543, 34.3015], tier: 3, region: 'Southern Africa', 
+            { name: 'Malawi', coords: [34.3015, -13.2543], tier: 3, region: 'Southern Africa', 
               info: 'Agriculture' },
             
             // TIER 4 - AVOID: Security/Economic Challenges
-            { name: 'Sudan', coords: [12.8628, 30.2176], tier: 4, region: 'North Africa', 
+            { name: 'Sudan', coords: [30.2176, 12.8628], tier: 4, region: 'North Africa', 
               info: 'AVOID: Security challenges, political instability' },
-            { name: 'South Sudan', coords: [6.8770, 31.3070], tier: 4, region: 'East Africa', 
+            { name: 'South Sudan', coords: [31.3070, 6.8770], tier: 4, region: 'East Africa', 
               info: 'AVOID: Ongoing conflict, severe instability' },
-            { name: 'Somalia', coords: [5.1521, 46.1996], tier: 4, region: 'East Africa', 
+            { name: 'Somalia', coords: [46.1996, 5.1521], tier: 4, region: 'East Africa', 
               info: 'AVOID: Security risks, lack of infrastructure' },
-            { name: 'Libya', coords: [26.3351, 17.2283], tier: 4, region: 'North Africa', 
+            { name: 'Libya', coords: [17.2283, 26.3351], tier: 4, region: 'North Africa', 
               info: 'AVOID: Political instability, security concerns' },
-            { name: 'Mali', coords: [17.5707, -3.9962], tier: 4, region: 'West Africa', 
+            { name: 'Mali', coords: [-3.9962, 17.5707], tier: 4, region: 'West Africa', 
               info: 'AVOID: Security challenges in northern regions' },
-            { name: 'Niger', coords: [17.6078, 8.0817], tier: 4, region: 'West Africa', 
+            { name: 'Niger', coords: [8.0817, 17.6078], tier: 4, region: 'West Africa', 
               info: 'AVOID: Security risks, limited infrastructure' },
-            { name: 'Burkina Faso', coords: [12.2383, -1.5616], tier: 4, region: 'West Africa', 
+            { name: 'Burkina Faso', coords: [-1.5616, 12.2383], tier: 4, region: 'West Africa', 
               info: 'AVOID: Security challenges, political instability' },
-            { name: 'Chad', coords: [15.4542, 18.7322], tier: 4, region: 'Central Africa', 
+            { name: 'Chad', coords: [18.7322, 15.4542], tier: 4, region: 'Central Africa', 
               info: 'AVOID: Political instability, security risks' },
-            { name: 'Central African Rep.', coords: [6.6111, 20.9394], tier: 4, region: 'Central Africa', 
+            { name: 'Central African Rep.', coords: [20.9394, 6.6111], tier: 4, region: 'Central Africa', 
               info: 'AVOID: Severe instability, humanitarian crisis' },
-            { name: 'DR Congo', coords: [-4.0383, 21.7587], tier: 4, region: 'Central Africa', 
+            { name: 'DR Congo', coords: [21.7587, -4.0383], tier: 4, region: 'Central Africa', 
               info: 'AVOID: Despite resources, severe security challenges' },
-            { name: 'Eritrea', coords: [15.1794, 39.7823], tier: 4, region: 'East Africa', 
+            { name: 'Eritrea', coords: [39.7823, 15.1794], tier: 4, region: 'East Africa', 
               info: 'AVOID: Political restrictions, limited opportunities' }
         ];
 
@@ -683,37 +439,55 @@
             4: 'AVOID'
         };
 
-        // Add markers for each country
+        // Store markers and popups
         const markers = {};
-        
-        countries.forEach(country => {
-            const marker = L.circleMarker(country.coords, {
-                radius: country.tier === 1 ? 12 : (country.tier === 2 ? 9 : 7),
-                fillColor: tierColors[country.tier],
-                color: '#fff',
-                weight: 2,
-                opacity: 1,
-                fillOpacity: 0.8
-            }).addTo(map);
+        const popups = {};
 
-            // Create popup content
-            const popupContent = `
-                <div class="popup-title">${country.name}</div>
-                <span class="popup-tier tier${country.tier}">${tierLabels[country.tier]}</span>
-                <div class="popup-info">${country.info}</div>
-                <div class="popup-region">${country.region}</div>
-            `;
+        // Wait for map to load
+        map.on('load', function() {
+            // Add markers for each country
+            countries.forEach(country => {
+                // Create marker element
+                const el = document.createElement('div');
+                el.className = 'marker';
+                const size = country.tier === 1 ? 24 : (country.tier === 2 ? 18 : 14);
+                el.style.width = size + 'px';
+                el.style.height = size + 'px';
+                el.style.borderRadius = '50%';
+                el.style.backgroundColor = tierColors[country.tier];
+                el.style.border = '3px solid white';
+                el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
+                el.style.cursor = 'pointer';
 
-            marker.bindPopup(popupContent);
-            
-            // Add tooltip that shows on hover
-            marker.bindTooltip(country.name, {
-                permanent: false,
-                direction: 'top'
+                // Create popup content
+                const popupContent = `
+                    <div class="popup-title">${country.name}</div>
+                    <span class="popup-tier tier${country.tier}">${tierLabels[country.tier]}</span>
+                    <div class="popup-info">${country.info}</div>
+                    <div class="popup-region">${country.region}</div>
+                `;
+
+                // Create popup
+                const popup = new maplibregl.Popup({ 
+                    offset: 25,
+                    closeButton: true,
+                    closeOnClick: false 
+                }).setHTML(popupContent);
+
+                // Create marker with popup
+                const marker = new maplibregl.Marker(el)
+                    .setLngLat(country.coords)
+                    .setPopup(popup)
+                    .addTo(map);
+
+                // Store marker and popup references
+                markers[country.name.toLowerCase()] = { 
+                    marker: marker, 
+                    coords: country.coords, 
+                    data: country 
+                };
+                popups[country.name.toLowerCase()] = popup;
             });
-            
-            // Store marker reference for search
-            markers[country.name.toLowerCase()] = { marker: marker, coords: country.coords, data: country };
         });
 
         // Populate country list
@@ -737,16 +511,17 @@
             // Add click handler
             countryDiv.addEventListener('click', function() {
                 // Zoom to country
-                map.setView(country.coords, 6, {
-                    animate: true,
-                    duration: 1
+                map.flyTo({
+                    center: country.coords,
+                    zoom: 6,
+                    duration: 1500
                 });
                 
                 // Open popup
                 const markerData = markers[country.name.toLowerCase()];
                 setTimeout(() => {
-                    markerData.marker.openPopup();
-                }, 500);
+                    markerData.marker.togglePopup();
+                }, 800);
                 
                 // Highlight the clicked item
                 document.querySelectorAll('.country-item').forEach(item => {
@@ -779,20 +554,21 @@
             
             if (found) {
                 // Zoom to country
-                map.setView(found.coords, 6, {
-                    animate: true,
-                    duration: 1
+                map.flyTo({
+                    center: found.coords,
+                    zoom: 6,
+                    duration: 1500
                 });
                 
                 // Open popup
                 setTimeout(() => {
-                    found.marker.openPopup();
-                }, 500);
+                    found.marker.togglePopup();
+                }, 800);
                 
                 // Show success message
-                resultDiv.innerHTML = `<span style="color: #ccffcc;">Found: ${found.data.name} - ${tierLabels[found.data.tier]}</span>`;
+                resultDiv.innerHTML = `<span style="color: #4CAF50;">✓ Found: ${found.data.name} - ${tierLabels[found.data.tier]}</span>`;
             } else {
-                resultDiv.innerHTML = `<span style="color: #ffcccc;">Country "${searchTerm}" not found. Try: Nigeria, Kenya, Morocco, etc.</span>`;
+                resultDiv.innerHTML = `<span style="color: #ff5252;">✗ Country "${searchTerm}" not found. Try: Nigeria, Kenya, Morocco, etc.</span>`;
             }
         }
         
@@ -802,11 +578,6 @@
             if (e.key === 'Enter') {
                 searchCountry();
             }
-        });
-
-        // Add click event to show info
-        map.on('click', function(e) {
-            console.log('Clicked coordinates:', e.latlng);
         });
     </script>
 </body>
