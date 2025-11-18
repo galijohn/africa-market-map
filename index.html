@@ -272,79 +272,9 @@
         
         /* Mobile Responsive Styles */
         @media screen and (max-width: 768px) {
-            #header h1 {
-                font-size: 18px;
-            }
-            
-            #header p {
-                font-size: 11px;
-            }
-            
-            #header input[type="text"] {
-                width: 200px !important;
-                font-size: 12px;
-                padding: 8px;
-            }
-            
-            #header button {
-                padding: 8px 12px;
-                font-size: 12px;
-            }
-            
-            #mainContainer {
-                flex-direction: column;
-            }
-            
-            #map {
-                height: 400px;
-                width: 100%;
-            }
-            
-            #countryList {
-                width: 100%;
-                max-height: 300px;
-                order: 2;
-            }
-            
-            #legend {
-                flex-direction: column;
-                align-items: flex-start;
-                padding: 10px;
-                gap: 10px;
-            }
-            
-            #legend h3 {
-                font-size: 14px;
-                margin-bottom: 5px;
-            }
-            
-            .legend-item {
-                width: 100%;
-            }
-            
-            .popup-title {
-                font-size: 16px;
-            }
-            
-            .popup-info {
-                font-size: 12px;
-            }
-        }
-        
-        /* Landscape Mobile */
-        @media screen and (max-width: 900px) and (orientation: landscape) {
-            #mainContainer {
-                flex-direction: row;
-            }
-            
-            #map {
-                height: 100%;
-                flex: 1;
-            }
-            
-            #countryList {
-                width: 250px;
-                max-height: 100%;
+            body {
+                height: 100vh;
+                overflow: hidden;
             }
             
             #header {
@@ -356,78 +286,246 @@
             }
             
             #header p {
-                display: none;
+                font-size: 10px;
+                margin: 3px 0 0 0;
             }
             
             #header input[type="text"] {
-                width: 150px !important;
-                font-size: 11px;
+                width: 160px !important;
+                font-size: 12px;
                 padding: 6px;
+                margin-top: 8px;
             }
             
             #header button {
-                padding: 6px 10px;
-                font-size: 11px;
+                padding: 6px 12px;
+                font-size: 12px;
+            }
+            
+            #mainContainer {
+                flex-direction: column;
+                flex: 1;
+            }
+            
+            #map {
+                height: 60vh;
+                width: 100%;
+                flex: none;
+            }
+            
+            #countryList {
+                width: 100%;
+                height: auto;
+                max-height: 25vh;
+                overflow-y: auto;
+                order: 2;
+                flex: none;
+            }
+            
+            #countryList h3 {
+                font-size: 14px;
+                padding: 8px 0;
+            }
+            
+            .country-item {
+                padding: 8px 10px;
+                margin: 3px 0;
+            }
+            
+            .country-name {
+                font-size: 13px;
             }
             
             #legend {
                 flex-direction: row;
-                padding: 8px;
-                gap: 15px;
+                align-items: center;
+                padding: 8px 10px;
+                gap: 10px;
                 flex-wrap: wrap;
+                justify-content: center;
+                flex: none;
             }
             
             #legend h3 {
                 font-size: 12px;
-                margin-right: 10px;
+                margin: 0;
+                width: 100%;
+                text-align: center;
+                margin-bottom: 5px;
+            }
+            
+            .legend-item {
+                flex: 0 0 auto;
             }
             
             .legend-text {
-                font-size: 11px;
+                font-size: 10px;
+            }
+            
+            .legend-text strong {
+                font-size: 10px;
             }
             
             .legend-color {
                 width: 15px;
                 height: 15px;
             }
+            
+            .popup-title {
+                font-size: 15px;
+            }
+            
+            .popup-info {
+                font-size: 11px;
+            }
+            
+            #footer {
+                display: none;
+            }
+        }
+        
+        /* Landscape Mobile */
+        @media screen and (max-width: 900px) and (orientation: landscape) {
+            body {
+                height: 100vh;
+                overflow: hidden;
+            }
+            
+            #mainContainer {
+                flex-direction: row;
+                flex: 1;
+            }
+            
+            #map {
+                height: 100%;
+                flex: 1;
+            }
+            
+            #countryList {
+                width: 220px;
+                max-height: 100%;
+                height: 100%;
+                flex: none;
+            }
+            
+            #countryList h3 {
+                font-size: 13px;
+                padding: 6px 0;
+            }
+            
+            .country-item {
+                padding: 6px 8px;
+                margin: 2px 0;
+            }
+            
+            .country-name {
+                font-size: 11px;
+            }
+            
+            .country-tier-badge {
+                font-size: 9px;
+                padding: 2px 6px;
+            }
+            
+            #header {
+                padding: 8px 12px;
+            }
+            
+            #header h1 {
+                font-size: 14px;
+            }
+            
+            #header p {
+                display: none;
+            }
+            
+            #header input[type="text"] {
+                width: 120px !important;
+                font-size: 10px;
+                padding: 5px;
+            }
+            
+            #header button {
+                padding: 5px 8px;
+                font-size: 10px;
+            }
+            
+            #searchResult {
+                display: none;
+            }
+            
+            #legend {
+                flex-direction: row;
+                padding: 5px 8px;
+                gap: 8px;
+                flex-wrap: nowrap;
+                justify-content: center;
+                flex: none;
+            }
+            
+            #legend h3 {
+                font-size: 10px;
+                margin: 0 5px 0 0;
+            }
+            
+            .legend-text {
+                font-size: 9px;
+            }
+            
+            .legend-text strong {
+                font-size: 9px;
+            }
+            
+            .legend-color {
+                width: 12px;
+                height: 12px;
+            }
+            
+            .legend-item {
+                gap: 4px;
+            }
+            
+            #footer {
+                display: none;
+            }
         }
         
         /* Small phones */
         @media screen and (max-width: 480px) {
             #header h1 {
-                font-size: 16px;
+                font-size: 14px;
             }
             
             #header input[type="text"] {
-                width: 150px !important;
+                width: 140px !important;
                 font-size: 11px;
             }
             
             #header button {
-                padding: 8px 10px;
+                padding: 6px 10px;
                 font-size: 11px;
                 margin-left: 5px;
             }
             
             #map {
-                height: 350px;
+                height: 55vh;
             }
             
             #countryList {
-                max-height: 250px;
+                max-height: 28vh;
             }
             
             .country-item {
-                padding: 8px;
-                font-size: 13px;
+                padding: 7px;
+                font-size: 12px;
             }
             
             #legend h3 {
-                font-size: 13px;
+                font-size: 11px;
             }
             
-            .legend-text {
-                font-size: 11px;
+            .legend-text strong {
+                font-size: 9px;
             }
         }
     </style>
