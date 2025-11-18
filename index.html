@@ -5,9 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
     <title>FuelOmat - Africa Target Markets Map</title>
     
-    <!-- MapLibre GL CSS & JS -->
-    <link href="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.css" rel="stylesheet" />
-    <script src="https://unpkg.com/maplibre-gl@3.6.2/dist/maplibre-gl.js"></script>
+    <!-- Leaflet CSS & JS - Reliable & Works Everywhere -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
     
     <style>
         body {
@@ -216,10 +216,14 @@
             min-height: 20px;
         }
         
-        /* MapLibre Popup Styles */
-        .maplibregl-popup-content {
-            padding: 15px;
+        /* Leaflet Popup Styles */
+        .leaflet-popup-content-wrapper {
             border-radius: 8px;
+            padding: 0;
+        }
+        
+        .leaflet-popup-content {
+            margin: 15px;
             min-width: 200px;
         }
         
@@ -333,94 +337,95 @@
     </div>
 
     <script>
-        // Initialize MapLibre GL map with English labels
-        const map = new maplibregl.Map({
-            container: 'map',
-            style: 'https://demotiles.maplibre.org/style.json', // Free demo tiles in English
-            center: [20, -5],
+        // Initialize Leaflet map - STABLE & WORKS ON GITHUB
+        const map = L.map('map', {
+            center: [-5, 20],
             zoom: 3,
+            minZoom: 2,
             maxZoom: 18,
-            minZoom: 2
+            zoomControl: true
         });
 
-        // Add navigation controls
-        map.addControl(new maplibregl.NavigationControl(), 'top-right');
-        map.addControl(new maplibregl.FullscreenControl(), 'top-right');
+        // Use OpenStreetMap tiles - Most reliable option
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+            maxZoom: 19
+        }).addTo(map);
 
-        // Country data with coordinates
+        // Country data with coordinates [lat, lng]
         const countries = [
             // TIER 1 - Primary Focus
-            { name: 'South Africa', coords: [28.0473, -26.2041], tier: 1, region: 'Southern Africa', 
+            { name: 'South Africa', coords: [-26.2041, 28.0473], tier: 1, region: 'Southern Africa', 
               info: 'Most developed market, strong infrastructure, major industries & mining' },
-            { name: 'Nigeria', coords: [8.6753, 9.0820], tier: 1, region: 'West Africa', 
+            { name: 'Nigeria', coords: [9.0820, 8.6753], tier: 1, region: 'West Africa', 
               info: 'Largest market (200M+ people), oil & gas industry, extensive transportation' },
-            { name: 'Kenya', coords: [37.9062, -0.0236], tier: 1, region: 'East Africa', 
+            { name: 'Kenya', coords: [-0.0236, 37.9062], tier: 1, region: 'East Africa', 
               info: 'Tech hub of East Africa, Mombasa port logistics, modern companies' },
-            { name: 'Egypt', coords: [30.8025, 26.8206], tier: 1, region: 'North Africa', 
+            { name: 'Egypt', coords: [26.8206, 30.8025], tier: 1, region: 'North Africa', 
               info: 'Huge market (100M+), manufacturing & construction, Suez Canal logistics' },
-            { name: 'Morocco', coords: [-7.0926, 31.7917], tier: 1, region: 'North Africa', 
+            { name: 'Morocco', coords: [31.7917, -7.0926], tier: 1, region: 'North Africa', 
               info: 'Modern infrastructure, Europe connections, developed industry' },
             
             // TIER 2 - Strategic Expansion
-            { name: 'Ghana', coords: [-1.0232, 7.9465], tier: 2, region: 'West Africa', 
+            { name: 'Ghana', coords: [7.9465, -1.0232], tier: 2, region: 'West Africa', 
               info: 'Stable economy, gold & oil, good infrastructure' },
-            { name: 'Ethiopia', coords: [40.4897, 9.1450], tier: 2, region: 'East Africa', 
+            { name: 'Ethiopia', coords: [9.1450, 40.4897], tier: 2, region: 'East Africa', 
               info: 'Fast growth, emerging industry, 120M population' },
-            { name: 'Tanzania', coords: [34.8888, -6.3690], tier: 2, region: 'East Africa', 
+            { name: 'Tanzania', coords: [-6.3690, 34.8888], tier: 2, region: 'East Africa', 
               info: 'Natural resources, developing infrastructure, Dar es Salaam port' },
-            { name: 'Botswana', coords: [24.6849, -22.3285], tier: 2, region: 'Southern Africa', 
+            { name: 'Botswana', coords: [-22.3285, 24.6849], tier: 2, region: 'Southern Africa', 
               info: 'Economic stability, diamond mining, good governance' },
-            { name: 'Ivory Coast', coords: [-5.5471, 7.5400], tier: 2, region: 'West Africa', 
+            { name: 'Ivory Coast', coords: [7.5400, -5.5471], tier: 2, region: 'West Africa', 
               info: 'Growing economy, Abidjan port, industry & agriculture' },
-            { name: 'Namibia', coords: [18.4904, -22.9576], tier: 2, region: 'Southern Africa', 
+            { name: 'Namibia', coords: [-22.9576, 18.4904], tier: 2, region: 'Southern Africa', 
               info: 'Mining sector, logistics, good infrastructure' },
             
             // TIER 3 - Future Markets
-            { name: 'Uganda', coords: [32.2903, 1.3733], tier: 3, region: 'East Africa', 
+            { name: 'Uganda', coords: [1.3733, 32.2903], tier: 3, region: 'East Africa', 
               info: 'Economic growth, agriculture & industry' },
-            { name: 'Zambia', coords: [27.8493, -13.1339], tier: 3, region: 'Southern Africa', 
+            { name: 'Zambia', coords: [-13.1339, 27.8493], tier: 3, region: 'Southern Africa', 
               info: 'Copper mining, industry' },
-            { name: 'Zimbabwe', coords: [29.1549, -19.0154], tier: 3, region: 'Southern Africa', 
+            { name: 'Zimbabwe', coords: [-19.0154, 29.1549], tier: 3, region: 'Southern Africa', 
               info: 'Mining, agriculture' },
-            { name: 'Senegal', coords: [-14.4524, 14.4974], tier: 3, region: 'West Africa', 
+            { name: 'Senegal', coords: [14.4974, -14.4524], tier: 3, region: 'West Africa', 
               info: 'Political stability, good infrastructure' },
-            { name: 'Rwanda', coords: [29.8739, -1.9403], tier: 3, region: 'East Africa', 
+            { name: 'Rwanda', coords: [-1.9403, 29.8739], tier: 3, region: 'East Africa', 
               info: 'Technology & innovation hub' },
-            { name: 'Mozambique', coords: [35.5296, -18.6657], tier: 3, region: 'East Africa', 
+            { name: 'Mozambique', coords: [-18.6657, 35.5296], tier: 3, region: 'East Africa', 
               info: 'Oil & gas, coal mining' },
-            { name: 'Tunisia', coords: [9.5375, 33.8869], tier: 3, region: 'North Africa', 
+            { name: 'Tunisia', coords: [33.8869, 9.5375], tier: 3, region: 'North Africa', 
               info: 'Manufacturing industry' },
-            { name: 'Algeria', coords: [1.6596, 28.0339], tier: 3, region: 'North Africa', 
+            { name: 'Algeria', coords: [28.0339, 1.6596], tier: 3, region: 'North Africa', 
               info: 'Oil & gas sector' },
-            { name: 'Cameroon', coords: [12.3547, 7.3697], tier: 3, region: 'West Africa', 
+            { name: 'Cameroon', coords: [7.3697, 12.3547], tier: 3, region: 'West Africa', 
               info: 'Oil, mining' },
-            { name: 'Angola', coords: [17.8739, -11.2027], tier: 3, region: 'Southern Africa', 
+            { name: 'Angola', coords: [-11.2027, 17.8739], tier: 3, region: 'Southern Africa', 
               info: 'Oil, mining' },
-            { name: 'Malawi', coords: [34.3015, -13.2543], tier: 3, region: 'Southern Africa', 
+            { name: 'Malawi', coords: [-13.2543, 34.3015], tier: 3, region: 'Southern Africa', 
               info: 'Agriculture' },
             
             // TIER 4 - AVOID: Security/Economic Challenges
-            { name: 'Sudan', coords: [30.2176, 12.8628], tier: 4, region: 'North Africa', 
+            { name: 'Sudan', coords: [12.8628, 30.2176], tier: 4, region: 'North Africa', 
               info: 'AVOID: Security challenges, political instability' },
-            { name: 'South Sudan', coords: [31.3070, 6.8770], tier: 4, region: 'East Africa', 
+            { name: 'South Sudan', coords: [6.8770, 31.3070], tier: 4, region: 'East Africa', 
               info: 'AVOID: Ongoing conflict, severe instability' },
-            { name: 'Somalia', coords: [46.1996, 5.1521], tier: 4, region: 'East Africa', 
+            { name: 'Somalia', coords: [5.1521, 46.1996], tier: 4, region: 'East Africa', 
               info: 'AVOID: Security risks, lack of infrastructure' },
-            { name: 'Libya', coords: [17.2283, 26.3351], tier: 4, region: 'North Africa', 
+            { name: 'Libya', coords: [26.3351, 17.2283], tier: 4, region: 'North Africa', 
               info: 'AVOID: Political instability, security concerns' },
-            { name: 'Mali', coords: [-3.9962, 17.5707], tier: 4, region: 'West Africa', 
+            { name: 'Mali', coords: [17.5707, -3.9962], tier: 4, region: 'West Africa', 
               info: 'AVOID: Security challenges in northern regions' },
-            { name: 'Niger', coords: [8.0817, 17.6078], tier: 4, region: 'West Africa', 
+            { name: 'Niger', coords: [17.6078, 8.0817], tier: 4, region: 'West Africa', 
               info: 'AVOID: Security risks, limited infrastructure' },
-            { name: 'Burkina Faso', coords: [-1.5616, 12.2383], tier: 4, region: 'West Africa', 
+            { name: 'Burkina Faso', coords: [12.2383, -1.5616], tier: 4, region: 'West Africa', 
               info: 'AVOID: Security challenges, political instability' },
-            { name: 'Chad', coords: [18.7322, 15.4542], tier: 4, region: 'Central Africa', 
+            { name: 'Chad', coords: [15.4542, 18.7322], tier: 4, region: 'Central Africa', 
               info: 'AVOID: Political instability, security risks' },
-            { name: 'Central African Rep.', coords: [20.9394, 6.6111], tier: 4, region: 'Central Africa', 
+            { name: 'Central African Rep.', coords: [6.6111, 20.9394], tier: 4, region: 'Central Africa', 
               info: 'AVOID: Severe instability, humanitarian crisis' },
-            { name: 'DR Congo', coords: [21.7587, -4.0383], tier: 4, region: 'Central Africa', 
+            { name: 'DR Congo', coords: [-4.0383, 21.7587], tier: 4, region: 'Central Africa', 
               info: 'AVOID: Despite resources, severe security challenges' },
-            { name: 'Eritrea', coords: [39.7823, 15.1794], tier: 4, region: 'East Africa', 
+            { name: 'Eritrea', coords: [15.1794, 39.7823], tier: 4, region: 'East Africa', 
               info: 'AVOID: Political restrictions, limited opportunities' }
         ];
 
@@ -439,55 +444,37 @@
             4: 'AVOID'
         };
 
-        // Store markers and popups
+        // Add markers for each country
         const markers = {};
-        const popups = {};
+        
+        countries.forEach(country => {
+            const marker = L.circleMarker(country.coords, {
+                radius: country.tier === 1 ? 12 : (country.tier === 2 ? 9 : 7),
+                fillColor: tierColors[country.tier],
+                color: '#fff',
+                weight: 2,
+                opacity: 1,
+                fillOpacity: 0.8
+            }).addTo(map);
 
-        // Wait for map to load
-        map.on('load', function() {
-            // Add markers for each country
-            countries.forEach(country => {
-                // Create marker element
-                const el = document.createElement('div');
-                el.className = 'marker';
-                const size = country.tier === 1 ? 24 : (country.tier === 2 ? 18 : 14);
-                el.style.width = size + 'px';
-                el.style.height = size + 'px';
-                el.style.borderRadius = '50%';
-                el.style.backgroundColor = tierColors[country.tier];
-                el.style.border = '3px solid white';
-                el.style.boxShadow = '0 2px 4px rgba(0,0,0,0.3)';
-                el.style.cursor = 'pointer';
+            // Create popup content
+            const popupContent = `
+                <div class="popup-title">${country.name}</div>
+                <span class="popup-tier tier${country.tier}">${tierLabels[country.tier]}</span>
+                <div class="popup-info">${country.info}</div>
+                <div class="popup-region">${country.region}</div>
+            `;
 
-                // Create popup content
-                const popupContent = `
-                    <div class="popup-title">${country.name}</div>
-                    <span class="popup-tier tier${country.tier}">${tierLabels[country.tier]}</span>
-                    <div class="popup-info">${country.info}</div>
-                    <div class="popup-region">${country.region}</div>
-                `;
-
-                // Create popup
-                const popup = new maplibregl.Popup({ 
-                    offset: 25,
-                    closeButton: true,
-                    closeOnClick: false 
-                }).setHTML(popupContent);
-
-                // Create marker with popup
-                const marker = new maplibregl.Marker(el)
-                    .setLngLat(country.coords)
-                    .setPopup(popup)
-                    .addTo(map);
-
-                // Store marker and popup references
-                markers[country.name.toLowerCase()] = { 
-                    marker: marker, 
-                    coords: country.coords, 
-                    data: country 
-                };
-                popups[country.name.toLowerCase()] = popup;
+            marker.bindPopup(popupContent);
+            
+            // Add tooltip that shows on hover
+            marker.bindTooltip(country.name, {
+                permanent: false,
+                direction: 'top'
             });
+            
+            // Store marker reference for search
+            markers[country.name.toLowerCase()] = { marker: marker, coords: country.coords, data: country };
         });
 
         // Populate country list
@@ -511,17 +498,16 @@
             // Add click handler
             countryDiv.addEventListener('click', function() {
                 // Zoom to country
-                map.flyTo({
-                    center: country.coords,
-                    zoom: 6,
-                    duration: 1500
+                map.setView(country.coords, 6, {
+                    animate: true,
+                    duration: 1
                 });
                 
                 // Open popup
                 const markerData = markers[country.name.toLowerCase()];
                 setTimeout(() => {
-                    markerData.marker.togglePopup();
-                }, 800);
+                    markerData.marker.openPopup();
+                }, 500);
                 
                 // Highlight the clicked item
                 document.querySelectorAll('.country-item').forEach(item => {
@@ -539,7 +525,7 @@
             const resultDiv = document.getElementById('searchResult');
             
             if (!searchTerm) {
-                resultDiv.innerHTML = '<span style="color: #ffcccc;">Please enter a country name</span>';
+                resultDiv.innerHTML = '<span style="color: #ff5252;">Please enter a country name</span>';
                 return;
             }
             
@@ -554,16 +540,15 @@
             
             if (found) {
                 // Zoom to country
-                map.flyTo({
-                    center: found.coords,
-                    zoom: 6,
-                    duration: 1500
+                map.setView(found.coords, 6, {
+                    animate: true,
+                    duration: 1
                 });
                 
                 // Open popup
                 setTimeout(() => {
-                    found.marker.togglePopup();
-                }, 800);
+                    found.marker.openPopup();
+                }, 500);
                 
                 // Show success message
                 resultDiv.innerHTML = `<span style="color: #4CAF50;">✓ Found: ${found.data.name} - ${tierLabels[found.data.tier]}</span>`;
@@ -578,6 +563,11 @@
             if (e.key === 'Enter') {
                 searchCountry();
             }
+        });
+
+        // Add click event to show info
+        map.on('click', function(e) {
+            console.log('Clicked coordinates:', e.latlng);
         });
     </script>
 </body>
